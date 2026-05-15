@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Estrella</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <style>
+        * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+        body {
+            margin: 0; padding: 0;
+            background: radial-gradient(circle at center, #06201a 0%, #020617 100%);
+            overflow: hidden;
+            font-family: 'Cormorant Garamond', serif;
+            height: 100vh;
+        }
+
+        .pine {
+            position: relative; width: 0; height: 0;
+            border-left: 45px solid transparent; border-right: 45px solid transparent;
+            border-bottom: 70px solid #041c14; margin-bottom: -25px;
+        }
+
+        @keyframes bloom {
+            0% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--r)) translateY(0) scale(0); }
+            100% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--r)) translateY(var(--y)) scale(1); }
+        }
+        @keyframes grow { from { height: 0; } to { height: 220px; } }
+        @keyframes sway { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
+
+        .petal { position: absolute; border-radius: 50% 50% 45% 45%; transform-origin: center; opacity: 0; }
+
+        .paper {
+            background: #fdf6e3; 
+            padding: 2.5rem; 
+            border-radius: 0.5rem; 
+            width: 92%; 
+            max-width: 550px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            border: 1px solid #d4c197;
+            max-height: 85vh; 
+            overflow-y: auto; 
+            text-align: center;
+            position: relative; 
+            z-index: 60;
+        }
+
+        #btn-abrir {
+            display: none; position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
+            z-index: 30;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: white; padding: 12px 30px; border-radius: 50px; cursor: pointer;
+            transition: 0.4s; letter-spacing: 3px; font-weight: 400;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center">
+
+    <audio id="musica" loop><source src="musica.mp3" type="audio/mpeg"></audio>
+    <div id="stars" class="absolute inset-0"></div>
+
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+        <div class="absolute bottom-0 left-[-15px] transform scale-[3]"> <div class="pine"></div> </div>
+        <div class="absolute bottom-0 right-[-15px] transform scale-[2.8]"> <div class="pine"></div> </div>
+    </div>
+
+    <div class="relative w-[300px] h-[400px] flex justify-center items-end" style="animation: sway 6s infinite ease-in-out;">
+        <div class="w-2 bg-green-900 rounded-full" style="animation: grow 3.5s forwards;"></div>
+        <div id="flower-head" class="absolute bottom-[220px]"></div>
+    </div>
+
+    <button id="btn-abrir" onclick="toggleLetter()">LEER CARTA</button>
+
+    <div id="overlay" class="fixed inset-0 bg-black/85 hidden z-50 flex items-center justify-center p-4">
+        <div class="paper text-[#2a1f12]">
+            <h2 class="text-3xl font-bold mb-8 border-b border-[#d4c197] pb-4">Querida flor, vida mía</h2>
+            <div class="space-y-6 text-xl leading-relaxed italic">
+                <p>Fuiste la flor más linda de este mundo,<br>llegaste en invierno, sin avisar,<br>a protegerme del frío más profundo,<br>el frío de la soledad.</p>
+                <p>Ahora te vas y el pecho se me parte,<br>pero más dolor sería retenerte.<br>Florece, amor, vuélvete más arte,<br>que amarte bien también es perderte.</p>
+                <p>Yo me quedo aquí, mirando desde lejos,<br>desde donde mi sombra no te tape el sol,<br>guardando de tu luz los últimos reflejos,<br>la flor más bella que tuvo este corazón.</p>
+                <p>Vida mía, mejor nombre no podrías tener,<br>porque las estrellas se te parecen tanto.<br>Las dos fueron hechas del mismo amanecer,<br>del mismo polvo eterno, del mismo llanto.</p>
+                <p>Y aunque no sé de qué está hecha el alma,<br>la tuya y la mía tienen algo igual.<br>Una misma raíz, una misma calma,<br>un hilo invisible que no tiene final.</p>
+                <p>No será en esta vida que el destino nos una,<br>pero en la otra, mi alma te reconocerá.<br>Te buscará en la luz, te encontrará en la oscuridad,<br>y esta vez, querida estrella, ya no te soltará.</p>
+
+                <div class="pt-6 text-left not-italic space-y-5 border-t border-[#d4c197] mt-6">
+                    <p class="font-bold text-[#1e3a8a] text-lg italic">Posdata:</p>
+                    <p class="text-[#2a1f12] text-lg font-medium">Llevo tu bufanda a todos lados que voy; este regalo que me diste ya no solo me protegerá de las noches más gélidas, sino que calentará mi alma en mis días más oscuros.</p>
+                    <p class="text-[#2d4a3e] text-lg">Y sé que no tiene que ver con la carta, pero quería decírtelo: el otro sábado que te vi me volví a dar cuenta que, sin duda alguna, eres la persona más bella que mis ojos vieron.</p>
+                    <p class="text-right font-bold text-2xl pt-4">Hasta que nos volvamos a ver, amor.</p>
+                </div>
+            </div>
+            <button onclick="toggleLetter()" class="mt-8 text-xs font-sans font-bold tracking-[4px] text-gray-500 hover:text-black">CERRAR</button>
+        </div>
+    </div>
+
+    <script>
+        const head = document.getElementById('flower-head');
+        const layers = [
+            { count: 10, w: '90px', h: '140px', y: '-70px', grad: '#ffffff, #3b82f6, #1e3a8a', delay: 1.5 },
+            { count: 8, w: '70px', h: '110px', y: '-50px', grad: '#1d4ed8, #0f172a', delay: 2.8 }
+        ];
+
+        layers.forEach(layer => {
+            for(let i=0; i<layer.count; i++) {
+                const p = document.createElement('div');
+                p.className = 'petal';
+                p.style.width = layer.w; p.style.height = layer.h;
+                p.style.background = `radial-gradient(circle at 50% 25%, ${layer.grad})`;
+                const angle = (360 / layer.count) * i;
+                p.style.setProperty('--r', angle + 'deg');
+                p.style.setProperty('--y', layer.y);
+                p.style.animation = `bloom 3s forwards ${layer.delay + (i * 0.12)}s`;
+                head.appendChild(p);
+            }
+        });
+
+        const center = document.createElement('div');
+        center.style.cssText = `position:absolute; width:48px; height:48px; background:radial-gradient(circle, #fef08a, #ca8a04); border-radius:50%; z-index:20; transform: translate(-50%, -50%); opacity:0;`;
+        center.style.setProperty('--r', '0deg'); center.style.setProperty('--y', '0px');
+        center.style.animation = 'bloom 2s forwards 5s';
+        head.appendChild(center);
+
+        for(let i=0; i<80; i++) {
+            const s = document.createElement('div');
+            const size = Math.random() * 2 + 1 + 'px';
+            s.style.cssText = `position:absolute; background:white; border-radius:50%; width:${size}; height:${size}; top:${Math.random()*100}%; left:${Math.random()*100}%; opacity:${Math.random()}`;
+            document.getElementById('stars').appendChild(s);
+        }
+
+        setTimeout(() => { 
+            const btn = document.getElementById('btn-abrir');
+            btn.style.display = 'block';
+        }, 7500);
+
+        function toggleLetter() {
+            const overlay = document.getElementById('overlay');
+            const music = document.getElementById('musica');
+            const btn = document.getElementById('btn-abrir');
+            if(overlay.classList.contains('hidden')) {
+                overlay.classList.remove('hidden');
+                btn.style.visibility = 'hidden';
+                music.play().catch(e => console.log("Audio play blocked"));
+            } else {
+                overlay.classList.add('hidden');
+                btn.style.visibility = 'visible';
+            }
+        }
+    </script>
+</body>
+</html>
